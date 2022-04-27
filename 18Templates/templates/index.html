@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Golang Template</title>
+    </head>
+    <body>
+        <h1>Hola {{ .UserName }} tienes {{ .Edad }} y estas probando templates en golang</h1>
+
+        {{ with $unaVariable := "El texto de este parrafo es parte de una variable" }}
+        <p>{{ $unaVariable }}</p>
+        {{ end }}
+
+        <!--
+            Operadores logicos en Template
+            not     !
+            and     &&
+            or      ||
+
+            Operadores Condicionales
+            eq      ==
+            ne      !=
+            lt      <
+            le      <=
+            gt      >
+            ge      >=
+        -->
+
+        {{  if .TieneSuenno }}
+            <p>Tiene sueño</p>
+        {{ else }}
+            <p>No tiene sueño</p>
+        {{ end }}
+    </body>
+</html>
