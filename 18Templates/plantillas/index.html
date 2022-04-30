@@ -5,6 +5,9 @@
         <title>Golang Template</title>
     </head>
     <body>
+        <!-- insertando barra desde otro archivo html -->
+        {{ template "bar" }}
+
         <h1>Hola {{ .UserName }} tienes {{ .Edad }} y estas probando templates en golang</h1>
 
         {{ with $unaVariable := "El texto de este parrafo es parte de una variable" }}
@@ -31,5 +34,8 @@
         {{ else }}
             <p>No tiene sueño</p>
         {{ end }}
+
+        <!-- insertando footer desde otro archivo -->
+        {{ template "footer" }}
     </body>
 </html>

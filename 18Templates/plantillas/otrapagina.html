@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Golang Template</title>
+    </head>
+    <body>
+        <!-- insertando barra desde otro archivo html -->
+        {{ template "bar" }}
+
+        <h3>Esta es otra pagina</h3>
+
+        <!-- insertando footer desde otro archivo -->
+        {{ template "footer" }}
+    </body>
+</html>

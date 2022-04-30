@@ -13,10 +13,18 @@ type Usuarios struct {
 	TieneSuenno bool
 }
 
-func Index(rw http.ResponseWriter, rq *http.Request) {
-	// creamos un elemento para cargar el archivo
-	template, err := template.ParseFiles("templates/index.html")
+// ParseGlob nbos sirve para cargar multiples archivos a traves de una ruta
+var templates = template.Must(template.New("T").ParseGlob("plantillas/*.html"))
 
+func renderizarTemplate(rw http.ResponseWriter, name string, data interface{}) {
+	err := templates.ExecuteTemplate(rw, name, data)
+
+	if err != nil {
+		http.Error(rw, "No se pudo renderizar", http.StatusInternalServerError)
+	}
+}
+
+func Index(rw http.ResponseWriter, rq *http.Request) {
 	// creamos una data
 	usrData := Usuarios{
 		UserName:    "Boris",
@@ -24,12 +32,11 @@ func Index(rw http.ResponseWriter, rq *http.Request) {
 		TieneSuenno: false,
 	}
 
-	if err != nil {
-		panic(err)
-	} else {
-		//entregamos la respuesta y adjuntamos la data
-		template.Execute(rw, usrData)
-	}
+	renderizarTemplate(rw, "index.html", usrData)
+}
+
+func OtraPagina(rw http.ResponseWriter, rq *http.Request) {
+	renderizarTemplate(rw, "otrapagina.html", nil)
 }
 
 func main() {
@@ -38,6 +45,7 @@ func main() {
 
 	// ruta
 	mux.HandleFunc("/", Index)
+	mux.HandleFunc("/otrapagina", OtraPagina)
 
 	server := &http.Server{
 		Addr:    "localhost:1337",
