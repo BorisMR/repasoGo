@@ -1,0 +1,1 @@
+console.log("hola desde js cargado por mux")

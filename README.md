@@ -1,2 +1,3 @@
 # repasoGo
- Repaso de curso de Go
+
+Repaso de material de curso de Go
