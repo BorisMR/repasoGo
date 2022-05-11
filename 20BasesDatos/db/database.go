@@ -8,7 +8,6 @@ import (
 )
 
 //username:password@tcp(localhost:3306)/database
-
 const url_db = "root:gol3m....gol3m@tcp(localhost:3306)/golang_db"
 
 var db *sql.DB
@@ -38,24 +37,59 @@ func Ping() {
 	}
 }
 
-func CargarSchemma(schema string, tablename string) {
-	if !ExisteTabla(tablename) {
-		fmt.Println("¡Cargando Esquema!")
-		result, _ := db.Exec(schema)
-		fmt.Println(result)
-		fmt.Println("¡Esquema Cargado!")
+func CargarTabla(schema string, tableName string) {
+	if !ExisteTabla(tableName) {
+		result, err := db.Exec(schema)
+
+		if err != nil {
+			fmt.Println("¡Error en Esquema!")
+			fmt.Println(err)
+		} else {
+			fmt.Println("¡Esquema Cargado!")
+			fmt.Println(result)
+		}
+
 	} else {
-		fmt.Println("¡La tabla ya se encuentra cargada!")
+		fmt.Println("¡La Tabla Ya Se Encuentra Cargada!")
 	}
 }
 
-func ExisteTabla(tablename string) bool {
-	sql := fmt.Sprintf("SHOW TABLES LIKE '%s'", tablename)
-	rows, err := db.Query(sql)
+func ExisteTabla(tableName string) bool {
+	sql := fmt.Sprintf("SHOW TABLES LIKE '%s'", tableName)
+	rows, err := Query(sql)
 
 	if err != nil {
 		fmt.Println("ERROR! => ", err)
 	}
 
 	return rows.Next()
+}
+
+// limpiar datos de tabla, reinicia Id
+func TruncateTable(tableName string) {
+	sql := fmt.Sprintf("TRUNCATE %s", tableName)
+	Exec(sql)
+
+	fmt.Println("->Limpiando Tabla", tableName)
+}
+
+// polimorfizando Exec y Query
+func Exec(qry string, args ...interface{}) (sql.Result, error) {
+	result, err := db.Exec(qry, args...)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return result, err
+}
+
+func Query(qry string, args ...interface{}) (*sql.Rows, error) {
+	rows, err := db.Query(qry, args...)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return rows, err
 }
